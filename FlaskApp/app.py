@@ -10,10 +10,11 @@ import os
 from sys import platform
 
 driver_path = 'chromedriver-win64\\chromedriver.exe'
-desktop_dir = desktop = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop\\')
 if (platform != 'win32'):
     desktop = os.path.join(os.path.join(os.path.expanduser('~')), 'Desktop/')
-    driver_path = 'chromedriver-win64/chromedriver.exe'
+    driver_path = 'FlaskApp/chromedriver-mac-arm64/chromedriver.exe'
+else:
+    desktop_dir = desktop = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop\\')
 
 app = Flask(__name__)
 
