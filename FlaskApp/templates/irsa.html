@@ -1,0 +1,31 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>IRSA</title>
+</head>
+
+<body>
+    <nav>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbar">
+        <div class="navbar-nav">
+          <a class="nav-item nav-link" id="home" href="/">Home</a>
+          <a class="nav-item nav-link" id="query" href="/query">Query</a>
+          <a class="nav-item nav-link" id="irsa" href="/irsa">IRSA</a>
+        </div>
+      </div>
+    </nav>
+    <form method="POST">
+        <h2>Enter the filenames separated by a comma</h2>
+        <label for="filename">filenames (no extension):</label><br>
+        <input type="text" id="filenames" name="filenames"><br><br>
+        <input type="submit" value="Submit"><br>
+    </form>
+</body>
+    
+</html>

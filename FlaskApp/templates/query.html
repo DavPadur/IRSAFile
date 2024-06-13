@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Query</title>
+</head>
+
+<body>
+    <nav>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbar">
+        <div class="navbar-nav">
+          <a class="nav-item nav-link" id="home" href="/">Home</a>
+          <a class="nav-item nav-link" id="query" href="/query">Query</a>
+          <a class="nav-item nav-link" id="irsa" href="/irsa">IRSA</a>
+        </div>
+      </div>
+    </nav>
+    <form method="POST">
+        <h2>Enter the ra, dec, and name of the file below</h2>
+            <label for="ra">ra:</label><br>
+            <input type="text" id="ra" name="ra"><br>
+            <label for="dec">dec:</label><br>
+            <input type="text" id="dec" name="dec"><br>
+            <label for="filename">filename (no extension):</label><br>
+            <input type="text" id="filename" name="filename"><br><br>
+            <input type="submit" value="Submit"><br>
+    </form>    
+</body>
+</html>
