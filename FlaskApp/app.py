@@ -9,13 +9,13 @@ from selenium.webdriver.chrome.service import Service
 import os
 from sys import platform
 
-
+# Determine the file path and driver path based on the platform
 if platform != 'win32':
-    desktop_dir = os.path.join(os.path.expanduser('~'), 'Desktop/')
+    file_dir = os.path.join(os.path.expanduser('~'), 'Desktop/FlaskApp/')
     driver_path = 'chromedriver-mac-arm64/chromedriver'
 else:
-    desktop_dir = os.path.join(os.environ['USERPROFILE'], 'Desktop\\')
-    driver_path = 'chromedriver-win64\\chromedriver.exe'
+    file_dir = os.path.join(os.environ['USERPROFILE'], 'Desktop\\FlaskApp\\')
+    driver_path = 'FlaskApp\\chromedriver-win64\\chromedriver.exe'
 
 app = Flask(__name__)
 
@@ -25,7 +25,6 @@ def home():
 
 @app.route("/query", methods=['POST', 'GET'])
 def query():
-
     service = pyvo.dal.TAPService('https://irsa.ipac.caltech.edu/TAP')
 
     def fetch_neowise_data(ra, dec, filename):
@@ -36,7 +35,7 @@ def query():
         """
         result = service.run_async(query)
         tab = result.to_table()
-        ascii.write(tab, f'{filename}.tbl', format='ipac')
+        ascii.write(tab, os.path.join(file_dir, f'{filename}.tbl'), format='ipac')
 
     try:
         fetch_neowise_data(request.form['ra'], request.form['dec'], request.form['filename'])
@@ -53,10 +52,17 @@ def irsa():
                 print(f"File not found: {file_path}")
                 return
 
+            print(f"Uploading file: {file_path}")
+
             file_input = wait.until(EC.presence_of_element_located((By.XPATH, '//input[@type="file"]')))
+            print("File input field found.")
             file_input.send_keys(file_path)
+            print(f"File path sent to input field: {file_path}")
+
             upload_button = wait.until(EC.element_to_be_clickable((By.XPATH, '//button[contains(text(), "Upload")]')))
             upload_button.click()
+            print("Upload button clicked.")
+
             click_bottom_left_upload(wait)
             print(f"File uploaded: {file_path}")
 
@@ -65,7 +71,7 @@ def irsa():
 
     def click_bottom_left_upload(wait):
         try:
-            bottom_left_upload_button = wait.until(EC.element_to_be_clickable((By.XPATH, '//button[contains(text(), "Upload") and @class="MuiButton-root MuiButton-variantSolid MuiButton-colorPrimary MuiButton-sizeMd ff-CompleteButton css-4qk412"]')))
+            bottom_left_upload_button = wait.until(EC.element_to_be_clickable((By.XPATH, '//button[contains(text(), "Upload") and contains(@class, "MuiButton-root")]')))
             bottom_left_upload_button.click()
             print("Bottom left upload button clicked.")
         except Exception as e:
@@ -78,10 +84,10 @@ def irsa():
         chrome_options.add_experimental_option("detach", True)
         driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
         driver.get('https://irsa.ipac.caltech.edu/irsaviewer/timeseries?__action=layout.showDropDown&')
-        wait = WebDriverWait(driver, 20)
+        wait = WebDriverWait(driver, 10)  # Increased wait time
 
         if filenames:
-            first_file_path = os.path.join(desktop_dir, f'{filenames[0].strip()}.tbl')
+            first_file_path = os.path.join(file_dir, f'{filenames[0].strip()}.tbl')
             upload_file(driver, wait, first_file_path)
 
         for filename in filenames[1:]:
@@ -89,12 +95,15 @@ def irsa():
             driver.switch_to.window(driver.window_handles[-1])
             driver.get('https://irsa.ipac.caltech.edu/irsaviewer/timeseries?__action=layout.showDropDown&')
 
-            file_path = os.path.join(desktop_dir, f'{filename.strip()}.tbl')
+            file_path = os.path.join(file_dir, f'{filename.strip()}.tbl')
             upload_file(driver, wait, file_path)
 
         driver.switch_to.window(driver.window_handles[0])
         is_seen_items_present = driver.execute_script("return localStorage.getItem('seenItems') !== null;")
         print(f"LocalStorage 'seenItems' presence: {is_seen_items_present}")
+
+    except Exception as e:
+        print(f"An error occurred in the main function: {e}")
 
     finally:
         return render_template("irsa.html")
