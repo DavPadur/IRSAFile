@@ -11,11 +11,11 @@ from sys import platform
 
 # Determine the file path and driver path based on the platform
 if platform != 'win32':
-    file_dir = os.path.join(os.path.expanduser('~'), 'Desktop/FlaskApp/')
-    driver_path = 'chromedriver-mac-arm64/chromedriver'
+    file_dir = os.path.join(os.path.expanduser('~'), 'Desktop/IRSAFile/FlaskApp/')
+    driver_path = os.path.join(file_dir, 'chromedriver-mac-arm64', 'chromedriver')
 else:
-    file_dir = os.path.join(os.environ['USERPROFILE'], 'Desktop\\FlaskApp\\')
-    driver_path = 'FlaskApp\\chromedriver-win64\\chromedriver.exe'
+    file_dir = os.path.join(os.environ['USERPROFILE'], 'Desktop\\IRSAFile\\FlaskApp\\')
+    driver_path = os.path.join(file_dir, 'chromedriver-win64', 'chromedriver.exe')
 
 app = Flask(__name__)
 
@@ -42,7 +42,6 @@ def query():
         # Add code to alert the user that the file has been saved successfully
     finally:
         return render_template("query.html")
-
 
 @app.route("/irsa", methods=['GET', 'POST'])
 def irsa():
@@ -108,6 +107,5 @@ def irsa():
     finally:
         return render_template("irsa.html")
 
-
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(debug=True, port=5001)
