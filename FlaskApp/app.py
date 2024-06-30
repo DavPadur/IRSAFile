@@ -11,10 +11,10 @@ from sys import platform
 
 # Determine the file path and driver path based on the platform
 if platform != 'win32':
-    file_dir = os.path.join(os.path.expanduser('~'), 'Desktop/IRSAFile-main/FlaskApp/')
+    file_dir = os.path.join(os.path.expanduser('~'), 'Desktop/IRSAFile/IRSAFile-main/FlaskApp/')
     driver_path = os.path.join(file_dir, 'chromedriver-mac-arm64', 'chromedriver')
 else:
-    file_dir = os.path.join(os.environ['USERPROFILE'], 'Desktop\\IRSAFile-main\\FlaskApp\\')
+    file_dir = os.path.join(os.environ['USERPROFILE'], 'Desktop\\IRSAFile\\IRSAFile-main\\FlaskApp\\')
     driver_path = os.path.join(file_dir, 'chromedriver-win64', 'chromedriver.exe')
 
 app = Flask(__name__)
