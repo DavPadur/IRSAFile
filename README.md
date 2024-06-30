@@ -1,6 +1,6 @@
 ### Step 1: Install Python
 
-Make sure Python is installed on your system. You can download and install Python from [python.org](https://www.python.org/downloads/).
+Make sure Python is installed on your system. You can download and install Python from [python.org](https://www.python.org/downloads/). (DOWNLOAD THE LATEST VERSION, preferably anything over 3.9)
 
 ### Step 2: Install Dependencies
 
