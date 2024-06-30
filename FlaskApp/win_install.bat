@@ -13,8 +13,13 @@ IF ERRORLEVEL 1 (
 :: Upgrade pip
 python -m pip install --upgrade pip
 
-:: Install dependencies
-python -m pip install --no-input flask selenium pyvo
+:: Install dependencies from requirements.txt
+IF NOT EXIST requirements.txt (
+    echo Downloading requirements.txt...
+    curl -O https://raw.githubusercontent.com/username/repo/main/requirements.txt
+)
+
+python -m pip install -r requirements.txt
 
 echo Installation complete.
 pause
