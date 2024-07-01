@@ -31,8 +31,11 @@ Paste the following link into your web browser, and install into the FlaskApp fo
 Windows:
    https://storage.googleapis.com/chrome-for-testing-public/126.0.6478.126/win64/chromedriver-win64.zip
 
-Mac:
+Mac (M1+):
    https://storage.googleapis.com/chrome-for-testing-public/126.0.6478.126/mac-arm64/chromedriver-mac-arm64.zip
+
+Mac (Intel):
+   https://storage.googleapis.com/chrome-for-testing-public/126.0.6478.126/mac-x64/chromedriver-mac-x64.zip
 
 ### Step 5: Extract the .zip file
 
