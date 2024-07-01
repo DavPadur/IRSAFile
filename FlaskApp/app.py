@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, flash
 import pyvo
 from astropy.io import ascii
 from selenium import webdriver
@@ -40,6 +40,9 @@ def query():
     try:
         fetch_neowise_data(request.form['ra'], request.form['dec'], request.form['filename'])
         # Add code to alert the user that the file has been saved successfully
+        flash('File has been saved successfully!', 'success')
+    except Exception as e:
+        flash(f'An error occurred: {e}', 'error')
     finally:
         return render_template("query.html")
 
