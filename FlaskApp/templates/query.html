@@ -4,30 +4,59 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Query</title>
+    <style>
+        .flashes {
+            list-style: none;
+            padding: 0;
+        }
+        .flashes li {
+            padding: 10px;
+            margin: 10px 0;
+        }
+        .flashes .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .flashes .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
 </head>
-
 <body>
     <nav>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbar">
-        <div class="navbar-nav">
-          <a class="nav-item nav-link" id="home" href="/">Home</a>
-          <a class="nav-item nav-link" id="query" href="/query">Query</a>
-          <a class="nav-item nav-link" id="irsa" href="/irsa">IRSA</a>
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbar">
+            <div class="navbar-nav">
+                <a class="nav-item nav-link" id="home" href="/">Home</a>
+                <a class="nav-item nav-link" id="query" href="/query">Query</a>
+                <a class="nav-item nav-link" id="irsa" href="/irsa">IRSA</a>
+            </div>
         </div>
-      </div>
     </nav>
-    <form method="POST">
+
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul class="flashes">
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="/query">
         <h2>Enter the ra, dec, and name of the file below</h2>
-            <label for="ra">ra:</label><br>
-            <input type="text" id="ra" name="ra"><br>
-            <label for="dec">dec:</label><br>
-            <input type="text" id="dec" name="dec"><br>
-            <label for="filename">filename (no extension):</label><br>
-            <input type="text" id="filename" name="filename"><br><br>
-            <input type="submit" value="Submit"><br>
-    </form>    
+        <label for="ra">ra:</label><br>
+        <input type="text" id="ra" name="ra"><br>
+        <label for="dec">dec:</label><br>
+        <input type="text" id="dec" name="dec"><br>
+        <label for="filename">filename (no extension):</label><br>
+        <input type="text" id="filename" name="filename"><br><br>
+        <input type="submit" value="Submit"><br>
+    </form>
 </body>
 </html>
