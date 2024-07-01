@@ -18,7 +18,7 @@ Make sure Python is installed on your system. You can download and install Pytho
 
 ### Step 3: Install Dependencies
 
-Install the required dependencies by putting them in your command prompt (mac: terminal, windows: command prompt)
+Install the required dependencies by copy and pasting the command below into your respective terminal. (mac: terminal / windows: command prompt)
 
    ```bash/cmd
    pip install -U pyvo selenium flask
