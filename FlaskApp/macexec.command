@@ -1,2 +1,2 @@
 #!/bin/bash
-python3 app.py
+sudo python3 app.py
