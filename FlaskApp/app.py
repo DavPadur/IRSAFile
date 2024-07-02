@@ -18,7 +18,7 @@ else:
     driver_path = os.path.join(file_dir, 'chromedriver-win64', 'chromedriver.exe')
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key'  
+app.secret_key = 'IRSA_secret_key'  
 
 @app.route("/")
 def home():
