@@ -87,7 +87,7 @@ def irsa():
         chrome_options.add_experimental_option("detach", True)
         driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
         driver.get('https://irsa.ipac.caltech.edu/irsaviewer/timeseries?__action=layout.showDropDown&')
-        wait = WebDriverWait(driver, 10)  # Increased wait time
+        wait = WebDriverWait(driver, 1)
 
         if filenames:
             first_file_path = os.path.join(file_dir, f'{filenames[0].strip()}.tbl')
