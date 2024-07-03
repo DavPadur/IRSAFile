@@ -6,6 +6,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
 import os
 from sys import platform
 
@@ -74,20 +75,31 @@ def irsa():
 
     def click_bottom_left_upload(wait):
         try:
-            bottom_left_upload_button = wait.until(EC.element_to_be_clickable((By.XPATH, '//button[contains(text(), "Upload") and contains(@class, "MuiButton-root")]')))
+            xpath = '//button[contains(text(), "Upload") and contains(@class, "MuiButton-root")]'
+            print(f"Using XPath: {xpath}")
+            bottom_left_upload_button = wait.until(EC.element_to_be_clickable((By.XPATH, xpath)))
+            print("Bottom left upload button found, attempting to click.")
             bottom_left_upload_button.click()
             print("Bottom left upload button clicked.")
         except Exception as e:
             print(f"An error occurred while clicking the bottom left upload button: {e}")
+            # Optionally, capture a screenshot for further investigation
+            driver.save_screenshot('error_screenshot.png')
 
     try:
         filenames = request.form['filenames'].split(',')
         chrome_service = Service(driver_path)
-        chrome_options = webdriver.ChromeOptions()
+        chrome_options = Options()
         chrome_options.add_experimental_option("detach", True)
+
+        if platform != 'win32':
+            chrome_binary_location = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"  
+            chrome_options.binary_location = chrome_binary_location
+            print(f"Chrome binary location set to: {chrome_options.binary_location}")
+
         driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
         driver.get('https://irsa.ipac.caltech.edu/irsaviewer/timeseries?__action=layout.showDropDown&')
-        wait = WebDriverWait(driver, 1)
+        wait = WebDriverWait(driver, 10)
 
         if filenames:
             first_file_path = os.path.join(file_dir, f'{filenames[0].strip()}.tbl')
