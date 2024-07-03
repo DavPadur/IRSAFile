@@ -20,8 +20,12 @@ Make sure Python is installed on your system. You can download and install Pytho
 
 Install the required dependencies by copy and pasting the command below into your respective terminal. (mac: terminal / windows: command prompt)
 
-   ```bash/cmd
+   ```Windows
    pip install -U pyvo selenium flask
+   ```
+
+   ```Mac
+   pip3 install -U pyvo selenium flask
    ```
 
 ### Step 4: Install ChromeDriver 
