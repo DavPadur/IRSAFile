@@ -62,3 +62,25 @@ Then enter the URL: http://127.0.0.1:5001/
 Navigate to the respective tab of what you would like to do, Query to find the star position in the database or IRSA to open that new .tbl file in the IRSA viewer
 
 Every time now after, all you have to do is repeat Step 6
+
+
+---
+
+## Extra Instructions 
+
+### Running your Flask App
+
+1 - git clone the repository into VS Code / IDE (look up on Google or ask chatGPT how to do it if you don't know).
+
+2 - Open terminal in VS CODE / IDE, ensure your terminal path is in the folder "FlaskApp" where the app.py script is located so IRSAFILE/FlaskApp
+
+3 - Run the next commands
+ 
+``` set FLASK_APP=app.py ``` 
+
+```flask run --host=127.0.0.1 --port=5001```
+
+4 - Now your app should be running and you should see the following on the terminal
+``` 
+ * Running on http://127.0.0.1:5001
+ ```
