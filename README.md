@@ -53,7 +53,7 @@ Then clicking on chromedriver
 
 ### Step 6: Running the Program
 
-Now click on your systems respective exec command (winexec/macexec)
+Now click on your systems respective exec command (Windows: winexec/Mac: macexec) in the FlaskApp Folder (Desktop -> IRSAFile-main -> FlaskApp) 
 
 Then enter the URL: http://127.0.0.1:5001/
 
