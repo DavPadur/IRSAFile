@@ -1,0 +1,4 @@
+Flask==3.0.3
+pyvo==1.5.2
+selenium==4.25.0
+chromedriver-autoinstaller==0.6.4

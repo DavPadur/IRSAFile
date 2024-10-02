@@ -1,4 +1,5 @@
 from flask import Flask, request, render_template, flash
+from werkzeug.utils import secure_filename
 import pyvo
 from astropy.io import ascii
 from selenium import webdriver
@@ -10,7 +11,6 @@ from selenium.webdriver.chrome.options import Options
 import os
 from sys import platform
 
-# Determine the file path and driver path based on the platform
 if platform != 'win32':
     file_dir = os.path.join(os.path.expanduser('~'), 'Desktop/IRSAFile-main/FlaskApp/')
     driver_path = os.path.join(file_dir, 'chromedriver-mac-arm64', 'chromedriver')
@@ -20,6 +20,11 @@ else:
 
 app = Flask(__name__)
 app.secret_key = 'IRSA_secret_key'  
+
+ALLOWED_EXTENSIONS = {'tbl'}
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route("/")
 def home():
@@ -37,16 +42,23 @@ def query():
         """
         result = service.run_async(query)
         tab = result.to_table()
-        ascii.write(tab, os.path.join(file_dir, f'{filename}.tbl'), format='ipac')
+        ascii.write(tab, os.path.join(file_dir, f'{filename}.tbl'), format='ipac', overwrite=True)
 
-    try:
-        fetch_neowise_data(request.form['ra'], request.form['dec'], request.form['filename'])
-        # Add code to alert the user that the file has been saved successfully
-        flash('File has been saved successfully!', 'success')
-    except Exception as e:
-        flash(f'An error occurred: {e}', 'error')
-    finally:
-        return render_template("query.html")
+    if request.method == 'POST':
+            ra = request.form.get('ra')
+            dec = request.form.get('dec')
+            filename = request.form.get('filename')
+
+            if not ra or not dec or not filename:
+                flash('Please provide valid RA, DEC, and Filename values.', 'warning')
+            else:
+                try:
+                    fetch_neowise_data(ra, dec, filename)
+                    flash('File has been saved successfully!', 'success')
+                except Exception as e:
+                    flash(f'An error occurred: {e}', 'error')
+    
+    return render_template("query.html")
 
 @app.route("/irsa", methods=['GET', 'POST'])
 def irsa():
@@ -59,13 +71,11 @@ def irsa():
             print(f"Uploading file: {file_path}")
 
             file_input = wait.until(EC.presence_of_element_located((By.XPATH, '//input[@type="file"]')))
-            print("File input field found.")
             file_input.send_keys(file_path)
             print(f"File path sent to input field: {file_path}")
 
             upload_button = wait.until(EC.element_to_be_clickable((By.XPATH, '//button[contains(text(), "Upload")]')))
             upload_button.click()
-            print("Upload button clicked.")
 
             click_bottom_left_upload(wait)
             print(f"File uploaded: {file_path}")
@@ -76,52 +86,61 @@ def irsa():
     def click_bottom_left_upload(wait):
         try:
             xpath = '//button[contains(text(), "Upload") and contains(@class, "MuiButton-root")]'
-            print(f"Using XPath: {xpath}")
             bottom_left_upload_button = wait.until(EC.element_to_be_clickable((By.XPATH, xpath)))
-            print("Bottom left upload button found, attempting to click.")
             bottom_left_upload_button.click()
-            print("Bottom left upload button clicked.")
         except Exception as e:
             print(f"An error occurred while clicking the bottom left upload button: {e}")
-            # Optionally, capture a screenshot for further investigation
-            driver.save_screenshot('error_screenshot.png')
+    if request.method == 'POST':
+        uploaded_file_paths = []
 
-    try:
-        filenames = request.form['filenames'].split(',')
-        chrome_service = Service(driver_path)
-        chrome_options = Options()
-        chrome_options.add_experimental_option("detach", True)
+        if 'files' in request.files:
+            files = request.files.getlist('files')
+            for file in files:
+                if file and allowed_file(file.filename):
+                    filename = secure_filename(file.filename)
+                    file_path = os.path.join(file_dir, filename)
+                    file.save(file_path)
+                    uploaded_file_paths.append(file_path)
 
-        if platform != 'win32':
-            chrome_binary_location = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"  
-            chrome_options.binary_location = chrome_binary_location
-            print(f"Chrome binary location set to: {chrome_options.binary_location}")
+        if 'filenames' in request.form and request.form['filenames']:
+            filenames = request.form['filenames'].split(',')
+            for filename in filenames:
+                file_path = os.path.join(file_dir, f'{filename.strip()}.tbl')
+                if os.path.exists(file_path):
+                    uploaded_file_paths.append(file_path)
+                else:
+                    flash(f'File not found: {file_path}', 'error')
 
-        driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
-        driver.get('https://irsa.ipac.caltech.edu/irsaviewer/timeseries?__action=layout.showDropDown&')
-        wait = WebDriverWait(driver, 10)
+        if uploaded_file_paths:
+            chrome_service = Service(driver_path)
+            chrome_options = Options()
+            chrome_options.add_experimental_option("detach", True)
 
-        if filenames:
-            first_file_path = os.path.join(file_dir, f'{filenames[0].strip()}.tbl')
-            upload_file(driver, wait, first_file_path)
+            if platform != 'win32':
+                chrome_binary_location = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+                chrome_options.binary_location = chrome_binary_location
 
-        for filename in filenames[1:]:
-            driver.execute_script("window.open('about:blank', '_blank');")
-            driver.switch_to.window(driver.window_handles[-1])
+            driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
             driver.get('https://irsa.ipac.caltech.edu/irsaviewer/timeseries?__action=layout.showDropDown&')
+            wait = WebDriverWait(driver, 10)
 
-            file_path = os.path.join(file_dir, f'{filename.strip()}.tbl')
-            upload_file(driver, wait, file_path)
+            upload_file(driver, wait, uploaded_file_paths[0])
 
-        driver.switch_to.window(driver.window_handles[0])
-        is_seen_items_present = driver.execute_script("return localStorage.getItem('seenItems') !== null;")
-        print(f"LocalStorage 'seenItems' presence: {is_seen_items_present}")
+            for file_path in uploaded_file_paths[1:]:
+                driver.execute_script("window.open('about:blank', '_blank');")
+                driver.switch_to.window(driver.window_handles[-1])
+                driver.get('https://irsa.ipac.caltech.edu/irsaviewer/timeseries?__action=layout.showDropDown&')
+                upload_file(driver, wait, file_path)
 
-    except Exception as e:
-        print(f"An error occurred in the main function: {e}")
+            driver.switch_to.window(driver.window_handles[0])
+            is_seen_items_present = driver.execute_script("return localStorage.getItem('seenItems') !== null;")
+            print(f"LocalStorage 'seenItems' presence: {is_seen_items_present}")
 
-    finally:
-        return render_template("irsa.html")
+        else:
+            flash('No valid files uploaded.', 'error')
+
+    return render_template("irsa.html")
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5001)
