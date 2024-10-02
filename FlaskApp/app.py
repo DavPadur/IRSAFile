@@ -10,6 +10,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 import os
 from sys import platform
+import chromedriver_autoinstaller
 
 if platform != 'win32':
     file_dir = os.path.join(os.path.expanduser('~'), 'Desktop/IRSAFile-main/FlaskApp/')
@@ -20,6 +21,8 @@ else:
 
 app = Flask(__name__)
 app.secret_key = 'IRSA_secret_key'  
+
+chromedriver_autoinstaller.install()
 
 ALLOWED_EXTENSIONS = {'tbl'}
 
