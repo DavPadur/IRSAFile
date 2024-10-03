@@ -31,10 +31,16 @@ Downloaded to your Desktop, open IRSAFile-main -> IRSAFile-main -> FlaskApp
 
 Now click on your systems respective exec command (Windows: winexec/Mac: macexec) in the FlaskApp Folder Desktop -> IRSAFile-main -> IRSAFile-main -> FlaskApp
 
+   #### Windows
+   winexec.bat
+   
+   #### Mac
+   macexec.command
+
 Then enter the URL: http://127.0.0.1:5001/
 
 ### Step 5: GOOD JOB
 
 Navigate to the respective tab of what you would like to do, Query to find the star position in the database or IRSA to open that new .tbl file in the IRSA viewer
 
-Every time now after, all you have to do is repeat Step 6 
+Every time now after, all you have to do is repeat Step 4
