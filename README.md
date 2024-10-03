@@ -2,9 +2,9 @@
 
 Click the green "Code" button and download the .zip file to your systems desktop
 
-![check_install_to_path](https://i.imgur.com/hXqWWJP.png)
+![download_zip](https://i.imgur.com/hXqWWJP.png)
 
-![check_install_to_path](https://i.imgur.com/HihRwsu.png)
+![extract_zip](https://i.imgur.com/HihRwsu.png)
 
 From your desktop then extract it back again to your desktop.
 
@@ -18,19 +18,18 @@ Make sure Python is installed on your system. You can download and install Pytho
 
 ### Step 3: Install Dependencies
 
-Install the required dependencies executing the respective install command for your system
+Install the required dependencies executing the respective install command for your system from the Flask App folder. 
+Downloaded to your Desktop, open IRSAFile-main -> IRSAFile-main -> FlaskApp
 
-   ```Windows
+   # Windows
    win_install.bat
-   ```
-
-   ```Mac
+   
+   # Mac
    mac_install.sh
-   ```
 
 ### Step 4: Running the Program
 
-Now click on your systems respective exec command (Windows: winexec/Mac: macexec) in the FlaskApp Folder (Desktop -> IRSAFile-main -> FlaskApp) 
+Now click on your systems respective exec command (Windows: winexec/Mac: macexec) in the FlaskApp Folder Desktop -> IRSAFile-main -> IRSAFile-main -> FlaskApp
 
 Then enter the URL: http://127.0.0.1:5001/
 
@@ -38,4 +37,4 @@ Then enter the URL: http://127.0.0.1:5001/
 
 Navigate to the respective tab of what you would like to do, Query to find the star position in the database or IRSA to open that new .tbl file in the IRSA viewer
 
-Every time now after, all you have to do is repeat Step 6
+Every time now after, all you have to do is repeat Step 6 
