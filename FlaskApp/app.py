@@ -15,6 +15,7 @@ import chromedriver_autoinstaller
 if platform != 'win32':
     file_dir = os.path.join(os.path.expanduser('~'), 'Desktop/IRSAFile-main/FlaskApp/')
 else:
+    #Edit the line below line if necessary with a OneDrive\\ before 'Desktop' in 'Desktop\\IRSAFile-main\\IRSAFile-main\\FlaskApp\\'
     file_dir = os.path.join(os.environ['USERPROFILE'], 'Desktop\\IRSAFile-main\\IRSAFile-main\\FlaskApp\\')
 
 driver_path = chromedriver_autoinstaller.install()
