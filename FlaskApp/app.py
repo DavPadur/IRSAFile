@@ -14,15 +14,13 @@ import chromedriver_autoinstaller
 
 if platform != 'win32':
     file_dir = os.path.join(os.path.expanduser('~'), 'Desktop/IRSAFile-main/FlaskApp/')
-    driver_path = os.path.join(file_dir, 'chromedriver-mac-arm64', 'chromedriver')
 else:
     file_dir = os.path.join(os.environ['USERPROFILE'], 'Desktop\\IRSAFile-main\\IRSAFile-main\\FlaskApp\\')
-    driver_path = os.path.join(file_dir, 'chromedriver-win64', 'chromedriver.exe')
+
+driver_path = chromedriver_autoinstaller.install()
 
 app = Flask(__name__)
 app.secret_key = 'IRSA_secret_key'  
-
-chromedriver_autoinstaller.install()
 
 ALLOWED_EXTENSIONS = {'tbl'}
 
