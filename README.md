@@ -21,10 +21,10 @@ Make sure Python is installed on your system. You can download and install Pytho
 Install the required dependencies executing the respective install command for your system from the Flask App folder. 
 Downloaded to your Desktop, open IRSAFile-main -> IRSAFile-main -> FlaskApp
 
-   # Windows
+   #### Windows
    win_install.bat
    
-   # Mac
+   #### Mac
    mac_install.sh
 
 ### Step 4: Running the Program
