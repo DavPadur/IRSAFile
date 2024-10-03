@@ -28,32 +28,13 @@ Install the required dependencies executing the respective install command for y
    mac_install.sh
    ```
 
-### Step 4: Install ChromeDriver 
-
-Paste the following link into your web browser, and install into the FlaskApp folder
-
-Windows:
-   https://storage.googleapis.com/chrome-for-testing-public/129.0.6668.70/win64/chromedriver-win64.zip
-   
-Mac (M1+):
-   https://storage.googleapis.com/chrome-for-testing-public/129.0.6668.70/mac-arm64/chromedriver-mac-arm64.zip
-   
-Mac (Intel):
-   https://storage.googleapis.com/chrome-for-testing-public/129.0.6668.70/mac-x64/chromedriver-mac-x64.zip
-
-### Step 5: Extract the .zip file
-
-Once you have extracted the files, install chrome driver by entering the extracted file 
-
-![extracting_chromedriver](https://i.imgur.com/oqqRTyc.png)
-
-### Step 6: Running the Program
+### Step 4: Running the Program
 
 Now click on your systems respective exec command (Windows: winexec/Mac: macexec) in the FlaskApp Folder (Desktop -> IRSAFile-main -> FlaskApp) 
 
 Then enter the URL: http://127.0.0.1:5001/
 
-### Step 7: GOOD JOB
+### Step 5: GOOD JOB
 
 Navigate to the respective tab of what you would like to do, Query to find the star position in the database or IRSA to open that new .tbl file in the IRSA viewer
 
